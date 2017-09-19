@@ -1,0 +1,12 @@
+{
+  "version": "1.0.0",
+  "configurations": [
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Test Server",
+      "program": "${workspaceRoot}/server/test.js",
+      "cwd": "${workspaceRoot}"
+    }
+  ]
+}
