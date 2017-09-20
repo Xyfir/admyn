@@ -1,7 +1,7 @@
 require('app-module-path').addPath(__dirname);
 
 const assert = require('assert');
-const mysql = require('lib/mysql');
+const mysql = require('lib/mysql-wrap');
 
 // Config object that would normally be passed to expressql/server
 const expressql = {

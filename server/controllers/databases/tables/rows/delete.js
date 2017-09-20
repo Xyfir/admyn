@@ -1,4 +1,4 @@
-const mysql = require('lib/mysql');
+const mysql = require('lib/mysql-wrap');
 
 /*
   DELETE databases/:db/tables/:t/rows
