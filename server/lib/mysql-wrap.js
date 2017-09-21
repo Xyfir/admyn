@@ -2,8 +2,9 @@ const mysql = require('mysql');
 
 /**
  * @typedef {object} MySQLConnectOptions
- * @prop {string} host
- * @prop {string} user
+ * @prop {string} [host=localhost]
+ * @prop {string} [user=root]
+ * @prop {number} [port=3306]
  * @prop {string} [password]
  * @prop {string} [database]
  */
@@ -19,8 +20,9 @@ class MySQL {
    */
   connect(options) {
     this.cn = mysql.createConnection({
-      host: options.host,
-      user: options.user,
+      port: options.port || 3306,
+      host: options.host || 'localhost',
+      user: options.user || 'root',
       password: options.password || '',
       database: options.database || ''
     });
