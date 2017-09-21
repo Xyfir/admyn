@@ -3,12 +3,12 @@ const mysql = require('lib/mysql-wrap');
 /*
   GET databases/:db/tables/:t/rows
   REQUIRED
-    columns: string|string[], orderBy: string, ascending: boolean,
+    columns: string, orderBy: string, ascending: boolean,
     limit: number, page: number
   OPTIONAL
-    search: [{
+    search: json([{
       column: string, query: string|number, type: 'exact|like|regexp'
-    }]
+    }])
   RETURN
     object[]
 */
@@ -25,9 +25,15 @@ module.exports = async function(req, res) {
 
     const { query: q } = req;
 
+    if (q.search) q.search = JSON.parse(q.search);
+    q.ascending = q.ascending == 'true';
+
     const sql = `
       SELECT
-        ${q.columns == '*' ? '*' : q.columns.map(c => `\`${c}\``).join(', ')}
+        ${q.columns == '*'
+          ? '*'
+          : q.columns.split(',').map(c => `\`${c}\``).join(', ')
+        }
       FROM
         \`${req.params.t}\`
       WHERE
@@ -37,7 +43,7 @@ module.exports = async function(req, res) {
       LIMIT
         ${q.limit * (q.page - 1)},${q.limit * q.page}
     `,
-    vars = (req.query.search || []).map(s => s.query),
+    vars = (q.search || []).map(s => s.query),
     rows = await db.query(sql, vars);
     db.close();
   

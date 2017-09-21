@@ -131,15 +131,15 @@ function wrap(path, req) {
       db: '_expressql_test_database_', t: 'users'
     },
     query: {
-      columns: '*', orderBy: 'user_id', ascending: true,
+      columns: '*', orderBy: 'user_id', ascending: 'true',
       limit: 1, page: 1,
-      search: [{
+      search: JSON.stringify([{
         column: 'user_id', query: 1, type: 'exact'
       }, {
         column: 'xyfir_id', query: '%test%', type: 'like'
       }, {
         column: 'email', query: '.+\@domain\.com', type: 'regexp'
-      }]
+      }])
     }
   }),
   expected = [{
