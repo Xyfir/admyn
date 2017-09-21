@@ -1,0 +1,24 @@
+div.expressql {
+  >div.md-toolbar-relative {
+    padding-top: 1em;
+  }
+
+  ul.databases, ul.tables {
+    padding: 0;
+  }
+
+  div.table-structure, div.table-data {
+    margin: auto;
+  }
+
+  section.row-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0.5em;
+
+    >button {
+      margin-top: 1em;
+    }
+  }
+}
