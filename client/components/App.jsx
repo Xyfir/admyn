@@ -8,7 +8,7 @@ import Button from 'react-md/lib/Buttons/Button';
 // Components
 import Databases from './databases/Databases';
 
-export default class ExpressqlAdminPanel extends React.Component {
+export default class AdmynPanel extends React.Component {
 
   constructor(props) {
     super(props);
@@ -30,7 +30,7 @@ export default class ExpressqlAdminPanel extends React.Component {
     })();
     
     return (
-      <div className='expressql'>
+      <div className='admyn'>
         <Toolbar
           colored fixed
           actions={[
@@ -50,12 +50,12 @@ export default class ExpressqlAdminPanel extends React.Component {
 
 }
 
-ExpressqlAdminPanel.propTypes = {
+AdmynPanel.propTypes = {
   title: PropTypes.string,
   api: PropTypes.string
 },
 
-ExpressqlAdminPanel.defaultProps = {
-  title: 'Expressql',
-  api: '/expressql'
+AdmynPanel.defaultProps = {
+  title: 'Admyn',
+  api: '/admyn'
 };

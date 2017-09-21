@@ -20,8 +20,8 @@ The following setup guide should be used as a rough example of how to implement 
 ## Server
 
 ```js
-const expressql = require('expressql/server');
 const express = require('express');
+const admyn = require('admyn/server');
 
 const app = express();
 
@@ -34,7 +34,7 @@ app.use(
   function(req, res, next) {
     // ... some code to check if user is an admin
 
-    req.expressql = {
+    req.admyn = {
       // This gives you the ability to specify each admin's database access
       database: {
         port: 3306,
@@ -46,7 +46,7 @@ app.use(
 
     next();
   },
-  expressql()
+  admyn()
 );
 ```
 
@@ -60,16 +60,16 @@ To integrate and configure the admin panel, it's highly recommended to give the 
 
 **Admin.jsx**
 ```jsx
-import AdminPanel from 'expressql/client/components/App';
+import AdminPanel from 'admyn/client/components/App';
 import { render } from 'react-dom';
 import React from 'react';
 
 render(
   // title= the title that shows in the panel's toolbar
-  // api= the base API route to access the Expressql API
-  <AdminPanel title='Expressql' api='/expressql' />,
+  // api= the base API route to access the Admyn API
+  <AdminPanel title='Admyn' api='/admyn' />,
   // element to render component to
-  document.getElementById('expressql')
+  document.getElementById('admyn')
 );
 ```
 
@@ -80,12 +80,12 @@ Now you'll need to create a `.SCSS` file to import the needed styles and add any
 **admin.scss**
 ```scss
 /*
-  react-md is used by Expressql and should be installed if you have Expressql
+  react-md is used by Admyn and should be installed if you have Admyn
   installed.
 */
 @import 'node_modules/react-md/src/scss/_react-md.scss';
 
-@import 'node_modules/expressql/client/styles/styles.scss';
+@import 'node_modules/admyn/client/styles/styles.scss';
 
 /* Set the colors / vars for the panel. Check react-md docs. */
 $md-primary-color: $md-purple-800;
@@ -109,7 +109,7 @@ Next you'll need an HTML file to pull everything together.
   <link rel="stylesheet" href="/path/to/admin.css">
 </head>
 <body>
-  <main id="expressql"></main>
+  <main id="admyn"></main>
   <script src="/path/to/Admin.js"></script>
 </body>
 </html>

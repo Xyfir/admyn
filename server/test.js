@@ -3,8 +3,8 @@ require('app-module-path').addPath(__dirname);
 const assert = require('assert');
 const mysql = require('lib/mysql-wrap');
 
-// Config object that would normally be passed to expressql/server
-const expressql = {
+// Config object that would normally be passed to admyn/server
+const admyn = {
   // Update these values to work in the environment you want to test
   // User should have all privileges for tests to work
   database: {
@@ -24,7 +24,7 @@ const expressql = {
  */
 function wrap(path, req) {
   const controller = require('controllers/' + path);
-  req.expressql = expressql;
+  req.admyn = admyn;
 
   return new Promise((resolve, reject) =>
     controller(req, {
@@ -42,25 +42,25 @@ function wrap(path, req) {
 (async function() {
 
   const db = new mysql;
-  db.connect(expressql.database);
+  db.connect(admyn.database);
 
   let res, actual, expected;
 
   // Create test database
-  await db.query('DROP DATABASE IF EXISTS `_expressql_test_database_`');
-  await db.query('CREATE DATABASE `_expressql_test_database_`');
+  await db.query('DROP DATABASE IF EXISTS `_admyn_test_database_`');
+  await db.query('CREATE DATABASE `_admyn_test_database_`');
 
-  // Query databases and check for _expressql_test_database_
+  // Query databases and check for _admyn_test_database_
   res = await wrap('databases/list', {}),
   assert(
-    !!res.find(d => d == '_expressql_test_database_'),
+    !!res.find(d => d == '_admyn_test_database_'),
     'controllers/databases/list'
   );
 
   // Switch to database
   db.close();
-  expressql.database.database = '_expressql_test_database_';
-  db.connect(expressql.database);
+  admyn.database.database = '_admyn_test_database_';
+  db.connect(admyn.database);
 
   // Create test table
   await db.query(`
@@ -76,7 +76,7 @@ function wrap(path, req) {
   
   // Query tables in database and check for table
   res = await wrap('databases/tables/list', {
-    params: { db: '_expressql_test_database_' }
+    params: { db: '_admyn_test_database_' }
   });
   assert(
     res.length == 1 && res[0] == 'users',
@@ -85,7 +85,7 @@ function wrap(path, req) {
 
   // Query structure of table1
   actual = await wrap('databases/tables/structure', {
-    params: { db: '_expressql_test_database_', t: 'users' }
+    params: { db: '_admyn_test_database_', t: 'users' }
   }),
   expected = [{
     Field: 'user_id', Type: 'int(10) unsigned', Null: 'NO', Key: 'PRI',
@@ -108,7 +108,7 @@ function wrap(path, req) {
   // Insert row into table
   actual = await wrap('databases/tables/rows/insert', {
     params: {
-      db: '_expressql_test_database_', t: 'users'
+      db: '_admyn_test_database_', t: 'users'
     },
     body: {
       data: {
@@ -128,7 +128,7 @@ function wrap(path, req) {
   // Query rows in table and check for row
   actual = await wrap('databases/tables/rows/find', {
     params: {
-      db: '_expressql_test_database_', t: 'users'
+      db: '_admyn_test_database_', t: 'users'
     },
     query: {
       columns: '*', orderBy: 'user_id', ascending: 'true',
@@ -153,7 +153,7 @@ function wrap(path, req) {
   // Edit row in table
   actual = await wrap('databases/tables/rows/edit', {
     params: {
-      db: '_expressql_test_database_', t: 'users'
+      db: '_admyn_test_database_', t: 'users'
     },
     body: {
       set: {
@@ -176,7 +176,7 @@ function wrap(path, req) {
   // Delete row in table
   actual = await wrap('databases/tables/rows/delete', {
     params: {
-      db: '_expressql_test_database_', t: 'users'
+      db: '_admyn_test_database_', t: 'users'
     },
     body: {
       where: {
@@ -193,7 +193,7 @@ function wrap(path, req) {
   );
 
   // Delete database
-  await db.query('DROP DATABASE `_expressql_test_database_`');
+  await db.query('DROP DATABASE `_admyn_test_database_`');
 
   console.log('Tests complete');
   process.exit(0);

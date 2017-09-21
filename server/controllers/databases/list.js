@@ -11,7 +11,7 @@ module.exports = async function(req, res) {
 
   try {
     db.connect(
-      Object.assign({}, req.expressql.database, { database: '' })
+      Object.assign({}, req.admyn.database, { database: '' })
     );
     const rows = await db.query('SHOW DATABASES');
     db.close();
