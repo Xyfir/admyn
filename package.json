@@ -1,14 +1,17 @@
 {
-  "name": "expressql",
+  "name": "admyn",
   "version": "1.0.0",
   "description": "Admin panel that integrates into existing Node + Express + MySQL / MariaDB applications.",
-  "main": "index.js",
+  "files": [
+    "client/",
+    "server/"
+  ],
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node server/test"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Xyfir/expressql.git"
+    "url": "git+https://github.com/Xyfir/admyn.git"
   },
   "keywords": [
     "express",
@@ -20,12 +23,17 @@
   "author": "Xyfir, LLC <contact@xyfir.com> (https://xyfir.com/)",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/Xyfir/expressql/issues"
+    "url": "https://github.com/Xyfir/admyn/issues"
   },
-  "homepage": "https://github.com/Xyfir/expressql#readme",
+  "homepage": "https://github.com/Xyfir/admyn#readme",
   "dependencies": {
     "app-module-path": "^2.2.0",
     "express": "^4.15.4",
-    "mysql": "^2.14.1"
+    "mysql": "^2.14.1",
+    "prop-types": "^15.5.10",
+    "react": "^15.6.1",
+    "react-dom": "^15.6.1",
+    "react-md": "^1.1.4",
+    "superagent": "^3.6.0"
   }
 }
