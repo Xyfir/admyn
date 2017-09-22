@@ -1,7 +1,5 @@
-require('app-module-path').addPath(__dirname);
-
 const assert = require('assert');
-const mysql = require('lib/mysql-wrap');
+const mysql = require('./lib/mysql-wrap');
 
 // Config object that would normally be passed to admyn/server
 const admyn = {
@@ -23,7 +21,7 @@ const admyn = {
  * @return {Promise}
  */
 function wrap(path, req) {
-  const controller = require('controllers/' + path);
+  const controller = require('./controllers/' + path);
   req.admyn = admyn;
 
   return new Promise((resolve, reject) =>

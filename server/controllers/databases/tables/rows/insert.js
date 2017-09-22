@@ -1,4 +1,4 @@
-const mysql = require('lib/mysql-wrap');
+const mysql = require('../../../../lib/mysql-wrap');
 
 /*
   POST databases/:db/tables/:t/rows

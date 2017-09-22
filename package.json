@@ -1,6 +1,6 @@
 {
   "name": "admyn",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Admin panel that integrates into existing Node + Express + MySQL / MariaDB applications.",
   "files": [
     "client/",
@@ -27,7 +27,6 @@
   },
   "homepage": "https://github.com/Xyfir/admyn#readme",
   "dependencies": {
-    "app-module-path": "^2.2.0",
     "express": "^4.15.4",
     "mysql": "^2.14.1",
     "prop-types": "^15.5.10",

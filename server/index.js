@@ -1,5 +1,3 @@
-require('app-module-path').addPath(__dirname);
-
 /**
  * Creates Express router for the admin panel route.
  * @param {object} [options] - Currently unused and can be ignored.
@@ -12,35 +10,35 @@ module.exports = function(options) {
   /* DATABASES */
   router.get(
     '/databases',
-    require('controllers/databases/list')
+    require('./controllers/databases/list')
   );
 
   /* DATABASES > TABLES */
   router.get(
     '/databases/:db/tables',
-    require('controllers/databases/tables/list')
+    require('./controllers/databases/tables/list')
   );
   router.get(
     '/databases/:db/tables/:t/structure',
-    require('controllers/databases/tables/structure')
+    require('./controllers/databases/tables/structure')
   );
 
   /* DATABASES > TABLES > ROWS */
   router.get(
     '/databases/:db/tables/:t/rows',
-    require('controllers/databases/tables/rows/find')
+    require('./controllers/databases/tables/rows/find')
   );
   router.put(
     '/databases/:db/tables/:t/rows',
-    require('controllers/databases/tables/rows/edit')
+    require('./controllers/databases/tables/rows/edit')
   );
   router.post(
     '/databases/:db/tables/:t/rows',
-    require('controllers/databases/tables/rows/insert')
+    require('./controllers/databases/tables/rows/insert')
   );
   router.delete(
     '/databases/:db/tables/:t/rows',
-    require('controllers/databases/tables/rows/delete')
+    require('./controllers/databases/tables/rows/delete')
   );
 
   return router;
