@@ -1,6 +1,6 @@
 {
   "name": "admyn",
-  "version": "1.0.1",
+  "version": "1.0.3",
   "description": "Admin panel that integrates into existing Node + Express + MySQL / MariaDB applications.",
   "files": [
     "client/",
@@ -34,5 +34,13 @@
     "react-dom": "^15.6.1",
     "react-md": "^1.1.4",
     "superagent": "^3.6.0"
-  }
+  },
+  "browserify": {
+    "transform": [[
+	  	"babelify", {
+	  		"presets": ["es2015", "react"],
+	  		"extensions": [".jsx", ".js"]
+	  	}
+	  ]]
+	}
 }
