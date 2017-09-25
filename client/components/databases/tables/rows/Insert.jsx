@@ -20,11 +20,7 @@ export default class InsertRow extends React.Component {
     request
       .post(this.props.api + route)
       .send({ data })
-      .end((err, res) => {
-        if (!err) return;
-
-        location.hash = '#/' + route;
-      });
+      .end((err, res) => !err && (location.hash = '#/' + route));
   }
 
   render() {
