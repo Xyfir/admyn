@@ -41,7 +41,7 @@ module.exports = async function(req, res) {
       ORDER BY
         \`${q.orderBy}\` ${q.ascending ? 'ASC' : 'DESC'}
       LIMIT
-        ${q.limit * (q.page - 1)},${q.limit * q.page}
+        ${q.limit * (q.page - 1)},${q.limit}
     `,
     vars = (q.search || []).map(s => s.query),
     rows = await db.query(sql, vars);
