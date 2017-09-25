@@ -98,7 +98,7 @@ export default class TableRows extends React.Component {
     const {rows} = this.state;
 
     return (
-      <div>
+      <div className='rows'>
         <TabsContainer
           colored
           panelClassName='md-grid'
@@ -149,21 +149,23 @@ export default class TableRows extends React.Component {
           </TableBody>
         </DataTable>
 
-        {this.state.page > 1 ? (
-          <Button
-            icon secondary
-            iconChildren='keyboard_arrow_left'
-            onClick={() => this.onChangePage(-1)}
-          />
-        ) : null}
+        <div className='pagination'>
+          {this.state.page > 1 ? (
+            <Button
+              icon secondary
+              iconChildren='keyboard_arrow_left'
+              onClick={() => this.onChangePage(-1)}
+            />
+          ) : null}
 
-        {this.state.rows.length == this.state.limit ? (
-          <Button
-            icon primary
-            iconChildren='keyboard_arrow_right'
-            onClick={() => this.onChangePage(1)}
-          />
-        ) : null}
+          {this.state.rows.length >= this.state.limit ? (
+            <Button
+              icon primary
+              iconChildren='keyboard_arrow_right'
+              onClick={() => this.onChangePage(1)}
+            />
+          ) : null}
+        </div>
 
         <Button
           floating fixed primary
