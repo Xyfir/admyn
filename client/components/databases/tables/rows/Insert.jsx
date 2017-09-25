@@ -12,13 +12,18 @@ export default class InsertRow extends React.Component {
   }
 
   onSubmit(data) {
+    const route =
+      'databases/' +
+      this.props.url[1] + '/tables/' +
+      this.props.url[3] + '/rows';
+
     request
-      .post('')
+      .post(this.props.api + route)
       .send({ data })
       .end((err, res) => {
         if (!err) return;
 
-        location.hash = '#/' + this.props.url.slice(0, 4).join('/');
+        location.hash = '#/' + route;
       });
   }
 
