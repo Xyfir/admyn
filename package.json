@@ -1,6 +1,6 @@
 {
   "name": "admyn",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Admin panel that integrates into existing Node + Express + MySQL / MariaDB applications.",
   "files": [
     "client/",
