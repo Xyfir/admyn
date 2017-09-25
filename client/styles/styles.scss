@@ -7,15 +7,38 @@ div.admyn {
     padding: 0;
   }
 
-  div.table-structure, div.table-data {
+  div.table-structure {
     margin: auto;
   }
 
-  section.row-form {
+  div.rows {
+    flex-direction: column;
+    align-items: center;
     display: flex;
+
+    >section.md-tabs-container {
+      width: 100%;
+    }
+
+    >div.table-data {
+      width: calc(100vw - 2em);
+      overflow: auto;
+
+      td {
+        cursor: pointer;
+      }
+    }
+
+    >div.pagination {
+      padding: 1em;
+    }
+  }
+
+  section.row-form {
     flex-direction: column;
     align-items: center;
     padding: 0.5em;
+    display: flex;
 
     >button {
       margin-top: 1em;
