@@ -3,6 +3,7 @@ import request from 'superagent';
 import React from 'react';
 
 // Components
+import Tabs from '../Tabs';
 import Form from './Form';
 
 export default class InsertRow extends React.Component {
@@ -25,10 +26,14 @@ export default class InsertRow extends React.Component {
 
   render() {
     return (
-      <Form
-        structure={this.props.structure}
-        onSubmit={d => this.onSubmit(d)}
-      />
+      <div>
+        <Tabs url={this.props.url} index={2} />
+
+        <Form
+          structure={this.props.structure}
+          onSubmit={d => this.onSubmit(d)}
+        />
+      </div>
     )
   }
 
