@@ -30,7 +30,7 @@ export default class Tables extends React.Component {
     const db = this.props.url[1];
 
     return (
-      <List className='tables md-paper md-paper--1'>{
+      <List className='tables md-paper md-paper--1 margin'>{
         this.state.tables.map(t =>
           <ListItem
             key={t}

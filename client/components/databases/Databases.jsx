@@ -28,7 +28,7 @@ export default class Databases extends React.Component {
     if (this.props.url.length > 1) return <Tables {...this.props} />
 
     return (
-      <List className='databases md-paper md-paper--1'>{
+      <List className='databases md-paper md-paper--1 margin'>{
         this.state.databases.map(db =>
           <ListItem
             key={db}
