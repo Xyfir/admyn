@@ -1,0 +1,5 @@
+{
+  "files.exclude": {
+    "client/index.js": true
+  }
+}
