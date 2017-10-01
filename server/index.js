@@ -12,6 +12,10 @@ module.exports = function(options) {
     '/databases',
     require('./controllers/databases/list')
   );
+  router.post(
+    '/databases/:db/query',
+    require('./controllers/databases/custom-query')
+  );
 
   /* DATABASES > TABLES */
   router.get(

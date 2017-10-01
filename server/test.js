@@ -148,6 +148,29 @@ function wrap(path, req) {
     actual, expected, 'controllers/databases/tables/rows/find'
   );
 
+  // Custom query (rows)
+  actual = await wrap('databases/custom-query', {
+    params: { db: '_admyn_test_database_' },
+    body: { query: 'SELECT 1 AS result' }
+  }),
+  expected = [{ result: 1 }];
+  assert.deepEqual(
+    actual, expected, 'controllers/databases/custom-query 1'
+  );
+
+  // Custom query (results)
+  actual = await wrap('databases/custom-query', {
+    params: { db: '_admyn_test_database_' },
+    body: { query: 'DELETE FROM users WHERE user_id = 99' }
+  }),
+  expected = [{
+    fieldCount: 0, affectedRows: 0, insertId: 0, serverStatus: 2,
+    warningCount: 0, message: '', protocol41: true, changedRows: 0
+  }];
+  assert.deepEqual(
+    actual, expected, 'controllers/databases/custom-query 2'
+  );
+
   // Edit row in table
   actual = await wrap('databases/tables/rows/edit', {
     params: {
