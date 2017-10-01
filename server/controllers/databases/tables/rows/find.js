@@ -3,9 +3,9 @@ const mysql = require('../../../../lib/mysql-wrap');
 /*
   GET databases/:db/tables/:t/rows
   REQUIRED
-    columns: string, orderBy: string, ascending: boolean,
-    limit: number, page: number
+    columns: string, orderBy: string, limit: number, page: number
   OPTIONAL
+    ascending: boolean,
     search: json([{
       column: string, query: string|number, type: 'exact|like|regexp'
     }])
@@ -26,7 +26,6 @@ module.exports = async function(req, res) {
     const { query: q } = req;
 
     if (q.search) q.search = JSON.parse(q.search);
-    q.ascending = q.ascending == 'true';
 
     const sql = `
       SELECT
