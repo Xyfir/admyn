@@ -1,7 +1,7 @@
 {
   "name": "admyn",
-  "version": "1.0.5",
-  "description": "Admin panel that integrates into existing Node + Express + MySQL / MariaDB applications.",
+  "version": "1.1.5",
+  "description": "An admin panel that integrates into existing Node + Express + MySQL/MariaDB applications.",
   "files": [
     "client/",
     "server/"
@@ -27,20 +27,36 @@
   },
   "homepage": "https://github.com/Xyfir/admyn#readme",
   "dependencies": {
-    "express": "^4.15.4",
+    "express": "^4.16.1",
     "mysql": "^2.14.1",
-    "prop-types": "^15.5.10",
-    "react": "^15.6.1",
-    "react-dom": "^15.6.1",
-    "react-md": "^1.1.4",
-    "superagent": "^3.6.0"
+    "prop-types": "^15.6.0",
+    "react": "^16.0.0",
+    "react-dom": "^16.0.0",
+    "react-md": "^1.1.5",
+    "superagent": "^3.6.1"
   },
   "browserify": {
-    "transform": [[
-	  	"babelify", {
-	  		"presets": ["es2015", "react"],
-	  		"extensions": [".jsx", ".js"]
-	  	}
-	  ]]
-	}
+    "transform": [
+      [
+        "babelify",
+        {
+          "presets": [
+            "env",
+            "react"
+          ],
+          "extensions": [
+            ".jsx",
+            ".js"
+          ]
+        }
+      ]
+    ]
+  },
+  "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.2",
+    "babel-preset-env": "^1.6.0",
+    "babel-preset-react": "^6.24.1",
+    "webpack": "^3.6.0"
+  }
 }
