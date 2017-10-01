@@ -21,9 +21,7 @@ export default class AdmynPanel extends React.Component {
 
   render() {
     const view = (() => {
-      const props = {
-        url: this.state.url, api: this.props.api
-      };
+      const props = { url: this.state.url, api: this.props.api };
 
       // Currently the only top-level component/section
       return <Databases {...props} />
@@ -32,7 +30,7 @@ export default class AdmynPanel extends React.Component {
     return (
       <div className='admyn'>
         <Toolbar
-          colored fixed
+          colored
           actions={[
             <Button
               icon
@@ -43,7 +41,7 @@ export default class AdmynPanel extends React.Component {
           title={this.props.title}
         />
 
-        <div className='md-toolbar-relative'>{view}</div>
+        {view}
       </div>
     );
   }
@@ -57,5 +55,5 @@ AdmynPanel.propTypes = {
 
 AdmynPanel.defaultProps = {
   title: 'Admyn',
-  api: '/admyn'
+  api: '/admyn/'
 };
