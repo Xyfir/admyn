@@ -3,19 +3,23 @@ import request from 'superagent';
 import React from 'react';
 
 // react-md
-import TabsContainer from 'react-md/lib/Tabs/TabsContainer';
+import ListItemControl from 'react-md/lib/Lists/ListItemControl';
 import TableHeader from 'react-md/lib/DataTables/TableHeader';
 import TableColumn from 'react-md/lib/DataTables/TableColumn';
 import DataTable from 'react-md/lib/DataTables/DataTable';
 import TableBody from 'react-md/lib/DataTables/TableBody';
+import TextField from 'react-md/lib/TextFields';
+import Checkbox from 'react-md/lib/SelectionControls/Checkbox';
 import TableRow from 'react-md/lib/DataTables/TableRow';
+import ListItem from 'react-md/lib/Lists/ListItem';
+import FontIcon from 'react-md/lib/FontIcons';
 import Button from 'react-md/lib/Buttons/Button';
 import Dialog from 'react-md/lib/Dialogs';
-import Tabs from 'react-md/lib/Tabs/Tabs';
-import Tab from 'react-md/lib/Tabs/Tab';
+import List from 'react-md/lib/Lists/List';
 
 // Components
 import Form from './Form';
+import Tabs from '../Tabs';
 
 export default class TableRows extends React.Component {
 
@@ -26,8 +30,8 @@ export default class TableRows extends React.Component {
       (props.structure.find(c => c.Key == 'PRI') || props.structure[0]).Field;
 
     this.state = {
-      rows: [], selected: -1,
-      columns: '*', orderBy, ascending: true, limit: 25, page: 1, search: []
+      rows: [], selected: -1, dialog: '', custom: false, query: '',
+      columns: ['*'], orderBy, ascending: true, limit: 25, page: 1, search: []
     };
 
     this.keys =
@@ -82,48 +86,81 @@ export default class TableRows extends React.Component {
       .end((err, res) => !err && this._loadRows());
   }
 
+  /**
+   * Toggles whether a column should be shown or not.
+   * @param {string} field
+   * @param {boolean} show
+   */
+  onToggleColumn(field, show) {
+    let columns = this.state.columns.slice();
+
+    // Key columns cannot be hidden because they're needed for editing
+    // and deleting rows
+    if (this.keys.indexOf(field) > -1) return;
+
+    // Show all columns other than the provided column
+    if (columns[0] == '*') {
+      columns = this.props.structure
+        .map(col => col.Field)
+        .filter(col => col != field);
+    }
+    // Add or remove column from list
+    else {
+      if (show)
+        columns.push(field);
+      else
+        columns = columns.filter(col => col != field);
+    }
+
+    this.setState({ columns }, () => this._loadRows());
+  }
+
+  onCustomQuery() {
+    request
+      .post(`${this.props.api}databases/${this.props.url[1]}/query`)
+      .send({ query: this.state.query })
+      .end((err, res) =>
+        !err && this.setState({ rows: res.body, custom: true })
+      );
+  }
+
   _loadRows() {
+    const {state: s} = this;
+
     request
       .get(this.api)
-      .query(
-        Object.assign({}, this.state, { rows: undefined, selected: undefined })
-      )
+      .query({
+        columns: s.columns.join(','), orderBy: s.orderBy,
+        search: s.search.length ? JSON.stringify(s.search) : undefined,
+        ascending: s.ascending || undefined, limit: s.limit, page: s.page
+      })
       .end((err, res) =>
         !err && this.setState({ rows: res.body, selected: -1 })
       );
   }
 
   render() {
-    const {structure, url} = this.props;
-    const {rows} = this.state;
+    const {rows, custom, columns} = this.state;
+    const structure = this.state.custom
+      ? Object.keys(rows[0] || {}).map(Field => Object({ Field }))
+      : this.props.structure;
 
     return (
       <div className='rows'>
-        <TabsContainer
-          colored
-          panelClassName='md-grid'
-          defaultTabIndex={0}
-        >
-          <Tabs tabId='tab' className='tabs'>
-            <Tab label='Data' />
-
-            <Tab
-              label='Structure'
-              onClick={() => location.hash =
-                `#/databases/${url[1]}/tables/${url[3]}/structure`
-              }
-            />
-          </Tabs>
-        </TabsContainer>
+        <Tabs url={this.props.url} index={0} />
 
         <DataTable plain className='table-data'>
           <TableHeader>
-            <TableRow>{
-              structure.map(col =>
+            <TableRow>{structure
+              .filter(col =>
+                columns[0] == '*' ||
+                columns.indexOf(col.Field) > -1
+              )
+              .map(col =>
                 <TableColumn
                   key={col.Field}
                   sorted={col.Field == this.state.orderBy}
-                  onClick={() => this.onSort(col.Field)}
+                  onClick={() => !custom && this.onSort(col.Field)}
                 >{col.Field}</TableColumn>
               )
             }</TableRow>
@@ -137,20 +174,24 @@ export default class TableRows extends React.Component {
                     ? this.keys.map(k => row[k]).join('-')
                     : i
                 }
-                onClick={() => this.setState({ selected: i })}
-              >
-                {this.props.structure.map(col =>
+                onClick={() => !custom && this.setState({ selected: i })}
+              >{structure
+                .filter(col =>
+                  columns[0] == '*' ||
+                  columns.indexOf(col.Field) > -1
+                )
+                .map(col =>
                   <TableColumn key={col.Field}>{
                     row[col.Field]
                   }</TableColumn>
-                )}
-              </TableRow>
+                )
+              }</TableRow>
             )}
           </TableBody>
         </DataTable>
 
         <div className='pagination'>
-          {this.state.page > 1 ? (
+          {this.state.page > 1 && !custom ? (
             <Button
               icon secondary
               iconChildren='keyboard_arrow_left'
@@ -158,7 +199,7 @@ export default class TableRows extends React.Component {
             />
           ) : null}
 
-          {this.state.rows.length >= this.state.limit ? (
+          {rows.length >= this.state.limit && !custom ? (
             <Button
               icon primary
               iconChildren='keyboard_arrow_right'
@@ -171,10 +212,67 @@ export default class TableRows extends React.Component {
           floating fixed primary
           tooltipPosition='left'
           fixedPosition='br'
-          tooltipLabel='Insert row'
-          iconChildren='add'
-          onClick={() => location.hash += '/insert'}
+          tooltipLabel='Open menu'
+          iconChildren='more_vert'
+          onClick={() => this.setState({ dialog: 'menu' })}
         />
+
+        <Dialog
+          id='dialog'
+          onHide={() => this.setState({ dialog: '' })}
+          visible={!!this.state.dialog}
+          aria-label='dialog'
+        >{this.state.dialog == 'query' ? (
+          <div className='custom-query'>
+            <TextField
+              id='textarea--custom-query'
+              rows={2}
+              type='text'
+              value={this.state.query}
+              maxRows={5}
+              onChange={v => this.setState({ query: v })}
+              className='md-cell'
+            />
+
+            <Button
+              primary flat
+              onClick={() => this.onCustomQuery()}
+            >Submit</Button>
+          </div>
+        ) : this.state.dialog == 'columns' ? (
+          <List className='columns'>{
+            structure.map(col =>
+              <ListItemControl
+                key={col.Field}
+                primaryAction={(
+                  <Checkbox
+                    id={'checkbox--col-' + col.Field}
+                    name={'checkbox--col-' + col.Field}
+                    label={col.Field}
+                    checked={
+                      columns[0] == '*' ||
+                      columns.indexOf(col.Field) > -1
+                    }
+                    onChange={c => this.onToggleColumn(col.Field, c)}
+                  />
+                )}
+              />
+            )
+          }</List>
+        ) : this.state.dialog == 'menu' ? (
+          <List className='dialog-menu'>
+            <ListItem
+              onClick={() => this.setState({ dialog: 'query' })}
+              leftIcon={<FontIcon>code</FontIcon>}
+              primaryText='Custom Query'
+            />
+            <ListItem
+              onClick={() => this.setState({ dialog: 'columns' })}
+              leftIcon={<FontIcon>view_column</FontIcon>}
+              primaryText='Toggle Columns'
+            />
+          </List>
+        ) : null}</Dialog>
 
         <Dialog
           fullPage
@@ -202,7 +300,7 @@ export default class TableRows extends React.Component {
           />
 
           <Form
-            structure={this.props.structure}
+            structure={structure}
             onSubmit={d => this.onEdit(d)}
             row={this.state.rows[this.state.selected]}
           />
