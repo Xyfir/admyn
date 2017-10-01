@@ -13,7 +13,7 @@ export default class AdmynPanel extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = { url: [] };
+    this.state = { url: location.hash.substr(2).split('/') };
 
     window.onhashchange = () =>
       this.setState({ url: location.hash.substr(2).split('/') });
