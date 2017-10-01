@@ -8,6 +8,7 @@ Used by [Ptorx](https://ptorx.com) and other [Xyfir](https://xyfir.com/) project
 - View tables within a database
 - View a table's structure
 - View, edit, insert, and remove rows within a table
+- Ability to write, run, and see the results of your own custom SQL queries
 
 This panel is currently very simple and limited in what it is able to do. Feel free to implement new features as you need them and create a pull request.
 
@@ -29,10 +30,11 @@ const app = express();
 
 app.use(
   // Use whatever base route you want
-  '/admin-panel',
+  '/admyn',
   // Validate that the user is authorized for action
   function(req, res, next) {
     // ... some code to check if user is an admin
+    if (!isUserAdmin) return res.status(403).send();
 
     req.admyn = {
       // This gives you the ability to specify each admin's database access
@@ -67,7 +69,7 @@ import React from 'react';
 render(
   // title= the title that shows in the panel's toolbar
   // api= the base API route to access the Admyn API
-  <AdminPanel title='Admyn' api='/admyn' />,
+  <AdminPanel title='Admyn' api='/admyn/' />,
   // element to render component to
   document.getElementById('admyn')
 );
@@ -117,7 +119,7 @@ Next you'll need an HTML file to pull everything together.
 
 ### Step 4
 
-The admin panel JS/JSX will now need to be bundled, transpiled, etc. We'll use Gulp + Browserify + Babel for this example. This of course can be done with Webpack or whatever combination of build tools your application is already using.
+The admin panel JS/JSX will now need to be bundled, transpiled, etc. We'll use Gulp + Browserify + Babel for this example. This of course can be done with Webpack + Babel or whatever combination of build tools your application is already using.
 
 **gulpfile.js**
 ```js
@@ -129,14 +131,10 @@ gulp.task('build-admin-js', () => {
   const extensions = ['.jsx', '.js'];
   
   return browserify(
-    `./path/to/Admin.jsx`, {
-      debug: true, extensions, paths: ['./client']
-    }
+    `./path/to/Admin.jsx`, { debug: true, extensions }
   )
   .transform(
-    babelify.configure({
-      extensions, presets: ['es2015', 'react']
-    })
+    babelify.configure({ extensions, presets: ['env', 'react'] })
   )
   .bundle()
   .pipe(source(`Admin.js`))
