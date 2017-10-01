@@ -1,6 +1,10 @@
+body {
+  margin: 0;
+}
+
 div.admyn {
-  >div.md-toolbar-relative {
-    padding-top: 1em;
+  .margin {
+    margin: 0.5em;
   }
 
   ul.databases, ul.tables {
@@ -31,6 +35,22 @@ div.admyn {
 
     >div.pagination {
       padding: 1em;
+    }
+
+    >span > div.md-dialog--centered {
+      overflow: auto;
+    }
+
+    div.custom-query {
+      display: flex;
+      padding: 0.2em;
+      align-items: center;
+      flex-direction: column;
+
+      >div.md-text-field-container {
+        width: 100%;
+        margin: 0;
+      }
     }
   }
 
