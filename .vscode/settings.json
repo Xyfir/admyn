@@ -1,5 +1,6 @@
 {
   "files.exclude": {
-    "client/index.js": true
+    "client/index.js": true,
+    "client/styles/admyn.css": true
   }
 }
