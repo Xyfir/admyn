@@ -77,7 +77,13 @@ render(
 
 ### Step 2
 
-Now you'll need to create a `.SCSS` file to import the needed styles and add any custom styles you want.
+### Defaults
+
+If you just want the CSS for the admin panel and don't want to add any customizations you need to somehow import the CSS file found at `node_modules/admyn/client/styles/admyn.css`.
+
+### Customization
+
+If you want to customize the admin panel you'll need to create a `.SCSS` file to import the needed styles and then add any custom styles you want.
 
 **admin.scss**
 ```scss
@@ -144,7 +150,7 @@ gulp.task('build-admin-js', () => {
 
 ### Step 5
 
-Finally, you'll need to convert the SCSS to CSS. We'll use Gulp again, with gulp-sass.
+Finally, you'll need to convert the SCSS to CSS. We'll use Gulp again, with gulp-sass. If you're using the default pre-built CSS file on its own you can skip this step.
 
 **gulpfile.js**
 ```js
