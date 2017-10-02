@@ -1,13 +1,16 @@
 {
   "name": "admyn",
-  "version": "1.1.5",
+  "version": "1.1.6",
   "description": "An admin panel that integrates into existing Node + Express + MySQL/MariaDB applications.",
   "files": [
     "client/",
     "server/"
   ],
   "scripts": {
-    "test": "node server/test"
+    "js": "webpack",
+    "css": "node-sass --output-style compressed client/styles/complete.scss client/styles/admyn.css",
+    "test": "node server/test",
+    "prepublish": "npm run js && npm run css"
   },
   "repository": {
     "type": "git",
@@ -57,6 +60,7 @@
     "babel-loader": "^7.1.2",
     "babel-preset-env": "^1.6.0",
     "babel-preset-react": "^6.24.1",
+    "node-sass": "^4.5.3",
     "webpack": "^3.6.0"
   }
 }
