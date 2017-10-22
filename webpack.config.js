@@ -6,7 +6,9 @@ module.exports = {
   entry: './client/components/App.jsx',
   
   output: {
+    libraryTarget: 'umd',
     filename: 'index.js',
+    library: 'Admyn',
     path: path.resolve(__dirname, 'client')
   },
 
