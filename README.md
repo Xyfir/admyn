@@ -62,7 +62,7 @@ To integrate and configure the admin panel, it's highly recommended to give the 
 
 **Admin.jsx**
 ```jsx
-import AdminPanel from 'admyn/client/components/App';
+import AdminPanel from 'admyn/client';
 import { render } from 'react-dom';
 import React from 'react';
 
