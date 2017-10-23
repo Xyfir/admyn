@@ -11,6 +11,8 @@ export default class RowForm extends React.Component {
 
   constructor(props) {
     super(props);
+
+    this.inputs = {};
   }
 
   onSubmit() {
@@ -18,9 +20,9 @@ export default class RowForm extends React.Component {
 
     this.props.structure.forEach(col => {
       if (/^date/.test(col.Type))
-        data[col.Field] = this.refs[col.Field].state.value;
+        data[col.Field] = this.inputs[col.Field].state.value;
       else
-        data[col.Field] = this.refs[col.Field].value;
+        data[col.Field] = this.inputs[col.Field].value;
     });
 
     this.props.onSubmit(data);
@@ -40,7 +42,7 @@ export default class RowForm extends React.Component {
             <TextField
               id={'col-' + col.Field}
               key={col.Field}
-              ref={col.Field}
+              ref={i => this.inputs[col.Field] = i}
               rows={2}
               type='text'
               label={col.Field}
@@ -54,7 +56,7 @@ export default class RowForm extends React.Component {
             <TextField
               id={'col-' + col.Field}
               key={col.Field}
-              ref={col.Field}
+              ref={i => this.inputs[col.Field] = i}
               type='number'
               label={col.Field}
               helpText={col.Type}
@@ -66,7 +68,7 @@ export default class RowForm extends React.Component {
             <DatePicker
               id={'col-' + col.Field}
               key={col.Field}
-              ref={col.Field}
+              ref={i => this.inputs[col.Field] = i}
               label={col.Field}
               helpText={col.Type}
               className='md-cell'
@@ -78,7 +80,7 @@ export default class RowForm extends React.Component {
             <TextField
               id={'col-' + col.Field}
               key={col.Field}
-              ref={col.Field}
+              ref={i => this.inputs[col.Field] = i}
               type='text'
               label={col.Field}
               helpText={col.Type}
