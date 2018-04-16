@@ -5,11 +5,11 @@
     "An admin panel that integrates into existing Node + Express + MySQL/MariaDB applications.",
   "files": ["client/", "server/"],
   "scripts": {
-    "js": "webpack",
-    "css":
+    "build:js": "webpack-cli",
+    "build:css":
       "node-sass --output-style compressed client/styles/complete.scss client/styles/admyn.css",
     "test": "node server/test",
-    "prepublishOnly": "npm run js && npm run css"
+    "prepublishOnly": "npm run build:js && npm run build:css"
   },
   "repository": {
     "type": "git",
