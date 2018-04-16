@@ -16,6 +16,4 @@ This panel is currently very simple and limited in what it is able to do. Feel f
 
 **WARNING!** Some setup is required. This is not a standalone admin panel that you install and run a couple commands. It was built to integrate directly into your existing application so as to give you more control over it. How you integrate it into your existing Express + MySQL application is largely up to you.
 
-The following setup guide should be used as a rough example of how to implement it. Things can vary greatly depending on your exact stack and environment.
-
 View the [example folder](https://github.com/Xyfir/admyn/tree/master/example) for a simple, but working example.
