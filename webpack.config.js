@@ -2,6 +2,9 @@ const webpack = require('webpack');
 const path = require('path');
 
 module.exports = {
+  // mode: 'development',
+  mode: 'production',
+
   entry: './client/components/App.jsx',
 
   output: {
@@ -28,12 +31,5 @@ module.exports = {
         }
       }
     ]
-  },
-
-  plugins: [
-    new webpack.optimize.UglifyJsPlugin({
-      mangle: false,
-      compress: { unused: false }
-    })
-  ]
+  }
 };
