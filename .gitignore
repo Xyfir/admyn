@@ -1,3 +1,4 @@
 node_modules/
+example/static/
 client/index.js
 client/styles/admyn.css
