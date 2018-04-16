@@ -1,25 +1,25 @@
+import {
+  ListItemControl,
+  DialogContainer,
+  TableHeader,
+  TableColumn,
+  DataTable,
+  TableBody,
+  TextField,
+  Checkbox,
+  TableRow,
+  ListItem,
+  FontIcon,
+  Button,
+  List
+} from 'react-md';
 import PropTypes from 'prop-types';
 import request from 'superagent';
 import React from 'react';
 
-// react-md
-import ListItemControl from 'react-md/lib/Lists/ListItemControl';
-import TableHeader from 'react-md/lib/DataTables/TableHeader';
-import TableColumn from 'react-md/lib/DataTables/TableColumn';
-import DataTable from 'react-md/lib/DataTables/DataTable';
-import TableBody from 'react-md/lib/DataTables/TableBody';
-import TextField from 'react-md/lib/TextFields';
-import Checkbox from 'react-md/lib/SelectionControls/Checkbox';
-import TableRow from 'react-md/lib/DataTables/TableRow';
-import ListItem from 'react-md/lib/Lists/ListItem';
-import FontIcon from 'react-md/lib/FontIcons';
-import Button from 'react-md/lib/Buttons/Button';
-import Dialog from 'react-md/lib/Dialogs';
-import List from 'react-md/lib/Lists/List';
-
 // Components
-import Form from './Form';
 import Tabs from '../Tabs';
+import Form from './Form';
 
 export default class TableRows extends React.Component {
   constructor(props) {
@@ -43,14 +43,10 @@ export default class TableRows extends React.Component {
       search: []
     };
 
-    (this.keys = props.structure.filter(c => c.Key == 'PRI').map(c => c.Field)),
-      (this.api =
-        props.api +
-        'databases/' +
-        props.url[1] +
-        '/tables/' +
-        props.url[3] +
-        '/rows');
+    this.keys = props.structure.filter(c => c.Key == 'PRI').map(c => c.Field);
+    this.api = `${props.api}databases/${props.url[1]}/tables/${
+      props.url[3]
+    }/rows`;
 
     this._loadRows = this._loadRows.bind(this);
   }
@@ -234,7 +230,7 @@ export default class TableRows extends React.Component {
           onClick={() => this.setState({ dialog: 'menu' })}
         />
 
-        <Dialog
+        <DialogContainer
           id="dialog"
           onHide={() => this.setState({ dialog: '' })}
           visible={!!this.state.dialog}
@@ -289,43 +285,21 @@ export default class TableRows extends React.Component {
               />
             </List>
           ) : null}
-        </Dialog>
+        </DialogContainer>
 
-        <Dialog
-          fullPage
+        <DialogContainer
           id="dialog--selected-row"
           onHide={() => this.setState({ selected: -1 })}
           visible={this.state.selected > -1 && !!this.keys.length}
           aria-label="selected-row"
         >
-          <Button
-            floating
-            fixed
-            primary
-            tooltipPosition="left"
-            fixedPosition="br"
-            tooltipLabel="Close"
-            iconChildren="close"
-            onClick={() => this.setState({ selected: -1 })}
-          />
-
-          <Button
-            floating
-            fixed
-            secondary
-            tooltipPosition="right"
-            fixedPosition="bl"
-            tooltipLabel="Delete"
-            iconChildren="delete"
-            onClick={() => this.onDelete()}
-          />
-
           <Form
             structure={structure}
+            onDelete={() => this.onDelete()}
             onSubmit={d => this.onEdit(d)}
             row={this.state.rows[this.state.selected]}
           />
-        </Dialog>
+        </DialogContainer>
       </div>
     );
   }
