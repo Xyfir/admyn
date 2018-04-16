@@ -5,11 +5,16 @@
     "An admin panel that integrates into existing Node + Express + MySQL/MariaDB applications.",
   "files": ["client/", "server/"],
   "scripts": {
-    "build:js": "webpack-cli",
-    "build:css":
+    "build:library": "npm run build:library:js && npm run build:library:css",
+    "build:example": "npm run build:example:js && npm run build:example:css",
+    "build:library:js": "webpack-cli",
+    "build:example:js": "webpack-cli --config webpack.example.config.js",
+    "build:example:css":
+      "node-sass --output-style compressed example/client.scss example/static/client.css",
+    "build:library:css":
       "node-sass --output-style compressed client/styles/complete.scss client/styles/admyn.css",
     "test": "node server/test",
-    "prepublishOnly": "npm run build:js && npm run build:css"
+    "prepublishOnly": "npm run build:library:js && npm run build:library:css"
   },
   "repository": {
     "type": "git",
@@ -34,6 +39,7 @@
     "babel-loader": "^7.1.4",
     "babel-preset-env": "^1.6.1",
     "babel-preset-react": "^6.24.1",
+    "body-parser": "^1.18.2",
     "node-sass": "^4.8.3",
     "prettier": "^1.12.0",
     "prop-types": "^15.6.1",
