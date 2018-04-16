@@ -8,7 +8,6 @@ import Insert from './rows/Insert';
 import Rows from './rows/Rows';
 
 export default class Table extends React.Component {
-
   constructor(props) {
     super(props);
 
@@ -18,9 +17,12 @@ export default class Table extends React.Component {
   componentWillMount() {
     request
       .get(
-        this.props.api + 'databases/' +
-        this.props.url[1] + '/tables/' +
-        this.props.url[3] + '/structure'
+        this.props.api +
+          'databases/' +
+          this.props.url[1] +
+          '/tables/' +
+          this.props.url[3] +
+          '/structure'
       )
       .end((err, res) => !err && this.setState({ structure: res.body }));
   }
@@ -28,21 +30,17 @@ export default class Table extends React.Component {
   render() {
     if (!this.state.structure.length) return null;
 
-    const props = Object.assign(
-      {}, this.props, { structure: this.state.structure }
-    );
+    const props = Object.assign({}, this.props, {
+      structure: this.state.structure
+    });
 
     if (this.props.url[4] == 'rows') {
-      if (this.props.url[5] == 'insert')
-        return <Insert {...props} />
-      else
-        return <Rows {...props} />
-    }
-    else {
-      return <Structure {...props} />
+      if (this.props.url[5] == 'insert') return <Insert {...props} />;
+      else return <Rows {...props} />;
+    } else {
+      return <Structure {...props} />;
     }
   }
-
 }
 
 Table.propTypes = {

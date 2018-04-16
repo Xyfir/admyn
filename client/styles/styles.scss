@@ -7,7 +7,8 @@ div.admyn {
     margin: 0.5em;
   }
 
-  ul.databases, ul.tables {
+  ul.databases,
+  ul.tables {
     padding: 0;
   }
 
@@ -20,11 +21,11 @@ div.admyn {
     align-items: center;
     display: flex;
 
-    >section.md-tabs-container {
+    > section.md-tabs-container {
       width: 100%;
     }
 
-    >div.table-data {
+    > div.table-data {
       width: calc(100vw - 2em);
       overflow: auto;
 
@@ -33,11 +34,11 @@ div.admyn {
       }
     }
 
-    >div.pagination {
+    > div.pagination {
       padding: 1em;
     }
 
-    >span > div.md-dialog--centered {
+    > span > div.md-dialog--centered {
       overflow: auto;
     }
 
@@ -47,7 +48,7 @@ div.admyn {
       align-items: center;
       flex-direction: column;
 
-      >div.md-text-field-container {
+      > div.md-text-field-container {
         width: 100%;
         margin: 0;
       }
@@ -60,7 +61,7 @@ div.admyn {
     padding: 0.5em;
     display: flex;
 
-    >button {
+    > button {
       margin-top: 1em;
     }
   }

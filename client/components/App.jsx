@@ -7,16 +7,17 @@ import React from 'react';
 import Databases from './databases/Databases';
 
 export default class AdmynPanel extends React.Component {
-
   constructor(props) {
     super(props);
 
     this.state = {
       url: location.hash.substr(2).split('/'),
       drawer: false,
-      databases: [/*{
+      databases: [
+        /*{
         name: string, tables: string[], expand: boolean
-      }*/]
+      }*/
+      ]
     };
 
     window.onhashchange = () => {
@@ -27,21 +28,20 @@ export default class AdmynPanel extends React.Component {
         (this.state.url[3] && url[3] && this.state.url[3] != url[3])
       )
         location.reload();
-      else
-        this.setState({ url  });
-    }
+      else this.setState({ url });
+    };
   }
 
   onLoadDatabases() {
     if (this.state.databases.length) return;
 
-    request
-      .get(this.props.api + 'databases')
-      .end((err, res) => !err &&
+    request.get(this.props.api + 'databases').end(
+      (err, res) =>
+        !err &&
         this.setState({
           databases: res.body.map(db => Object({ name: db, tables: [] }))
         })
-      );
+    );
   }
 
   /** @param {string} db */
@@ -57,16 +57,13 @@ export default class AdmynPanel extends React.Component {
 
     if (databases[i].tables.length) return;
 
-    request
-      .get(`${this.props.api}databases/${db}/tables`)
-      .end((err, res) => {
-        if (err) return;
+    request.get(`${this.props.api}databases/${db}/tables`).end((err, res) => {
+      if (err) return;
 
-        databases[i].tables = res.body,
-        databases[i].expand = true;
+      (databases[i].tables = res.body), (databases[i].expand = true);
 
-        this.setState({ databases });
-      });
+      this.setState({ databases });
+    });
   }
 
   render() {
@@ -74,28 +71,27 @@ export default class AdmynPanel extends React.Component {
       const props = { url: this.state.url, api: this.props.api };
 
       // Currently the only top-level component/section
-      return <Databases {...props} />
+      return <Databases {...props} />;
     })();
-    
+
     return (
-      <div className='admyn'>
+      <div className="admyn">
         <Toolbar
           colored
           actions={[
             <Button
               icon
-              iconChildren='home'
-              onClick={() => location.hash = '#/databases'}
+              iconChildren="home"
+              onClick={() => (location.hash = '#/databases')}
             />
           ]}
           title={this.props.title}
           nav={
             <Button
               icon
-              iconChildren='menu'
+              iconChildren="menu"
               onClick={() =>
-                !this.setState({ drawer: true }) &&
-                this.onLoadDatabases()
+                !this.setState({ drawer: true }) && this.onLoadDatabases()
               }
             />
           }
@@ -104,27 +100,25 @@ export default class AdmynPanel extends React.Component {
         <Drawer
           onVisibilityChange={v => this.setState({ drawer: v })}
           autoclose={true}
-          navItems={
-            this.state.databases.map(db =>
-              <ListItem
-                key={db.name}
-                visible={db.expand}
-                onClick={e => this.onLoadTables(db.name)}
-                primaryText={db.name}
-                nestedItems={
-                  db.tables.map(tbl =>
-                    <ListItem
-                      key={tbl}
-                      onClick={() => location.hash =
-                        `#/databases/${db.name}/tables/${tbl}/rows`
-                      }
-                      primaryText={tbl}
-                    />
-                  )
-                }
-              />
-            )
-          }
+          navItems={this.state.databases.map(db => (
+            <ListItem
+              key={db.name}
+              visible={db.expand}
+              onClick={e => this.onLoadTables(db.name)}
+              primaryText={db.name}
+              nestedItems={db.tables.map(tbl => (
+                <ListItem
+                  key={tbl}
+                  onClick={() =>
+                    (location.hash = `#/databases/${
+                      db.name
+                    }/tables/${tbl}/rows`)
+                  }
+                  primaryText={tbl}
+                />
+              ))}
+            />
+          ))}
           visible={this.state.drawer}
           type={Drawer.DrawerTypes.TEMPORARY}
         />
@@ -133,15 +127,13 @@ export default class AdmynPanel extends React.Component {
       </div>
     );
   }
-
 }
 
-AdmynPanel.propTypes = {
+(AdmynPanel.propTypes = {
   title: PropTypes.string,
   api: PropTypes.string
-},
-
-AdmynPanel.defaultProps = {
-  title: 'Admyn',
-  api: '/admyn/'
-};
+}),
+  (AdmynPanel.defaultProps = {
+    title: 'Admyn',
+    api: '/admyn/'
+  });

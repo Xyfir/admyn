@@ -10,7 +10,6 @@ import List from 'react-md/lib/Lists/List';
 import Tables from './tables/Tables';
 
 export default class Databases extends React.Component {
-
   constructor(props) {
     super(props);
 
@@ -25,21 +24,20 @@ export default class Databases extends React.Component {
 
   render() {
     if (!this.state.databases.length) return null;
-    if (this.props.url.length > 1) return <Tables {...this.props} />
+    if (this.props.url.length > 1) return <Tables {...this.props} />;
 
     return (
-      <List className='databases md-paper md-paper--1 margin'>{
-        this.state.databases.map(db =>
+      <List className="databases md-paper md-paper--1 margin">
+        {this.state.databases.map(db => (
           <ListItem
             key={db}
-            onClick={() => location.hash = `#/databases/${db}/tables`}
+            onClick={() => (location.hash = `#/databases/${db}/tables`)}
             primaryText={db}
           />
-        )
-      }</List>
-    )
+        ))}
+      </List>
+    );
   }
-
 }
 
 Databases.propTypes = {

@@ -10,7 +10,6 @@ import List from 'react-md/lib/Lists/List';
 import Table from './Table';
 
 export default class Tables extends React.Component {
-
   constructor(props) {
     super(props);
 
@@ -25,25 +24,24 @@ export default class Tables extends React.Component {
 
   render() {
     if (!this.state.tables.length) return null;
-    if (this.props.url.length > 3) return <Table {...this.props} />
+    if (this.props.url.length > 3) return <Table {...this.props} />;
 
     const db = this.props.url[1];
 
     return (
-      <List className='tables md-paper md-paper--1 margin'>{
-        this.state.tables.map(t =>
+      <List className="tables md-paper md-paper--1 margin">
+        {this.state.tables.map(t => (
           <ListItem
             key={t}
-            onClick={() => location.hash =
-              `#/databases/${db}/tables/${t}/rows`
+            onClick={() =>
+              (location.hash = `#/databases/${db}/tables/${t}/rows`)
             }
             primaryText={t}
           />
-        )
-      }</List>
-    )
+        ))}
+      </List>
+    );
   }
-
 }
 
 Tables.propTypes = {

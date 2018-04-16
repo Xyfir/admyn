@@ -7,7 +7,6 @@ import Tabs from '../Tabs';
 import Form from './Form';
 
 export default class InsertRow extends React.Component {
-
   constructor(props) {
     super(props);
   }
@@ -15,8 +14,10 @@ export default class InsertRow extends React.Component {
   onSubmit(data) {
     const route =
       'databases/' +
-      this.props.url[1] + '/tables/' +
-      this.props.url[3] + '/rows';
+      this.props.url[1] +
+      '/tables/' +
+      this.props.url[3] +
+      '/rows';
 
     request
       .post(this.props.api + route)
@@ -34,9 +35,8 @@ export default class InsertRow extends React.Component {
           onSubmit={d => this.onSubmit(d)}
         />
       </div>
-    )
+    );
   }
-
 }
 
 /* For some reason this throws an error when uncommented

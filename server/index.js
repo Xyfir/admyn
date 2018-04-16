@@ -4,14 +4,10 @@
  * @return {Express.Router}
  */
 module.exports = function(options) {
-
   const router = require('express').Router();
 
   /* DATABASES */
-  router.get(
-    '/databases',
-    require('./controllers/databases/list')
-  );
+  router.get('/databases', require('./controllers/databases/list'));
   router.post(
     '/databases/:db/query',
     require('./controllers/databases/custom-query')
@@ -46,5 +42,4 @@ module.exports = function(options) {
   );
 
   return router;
-
-}
+};

@@ -6,8 +6,7 @@ const mysql = require('../../../lib/mysql-wrap');
     string[] // names of tables
 */
 module.exports = async function(req, res) {
-
-  const db = new mysql;
+  const db = new mysql();
 
   try {
     db.connect(
@@ -19,10 +18,8 @@ module.exports = async function(req, res) {
     db.close();
 
     res.json(rows.map(r => r['Tables_in_' + req.params.db]));
-  }
-  catch (err) {
+  } catch (err) {
     db.close();
     res.status(400).json({ error: err });
   }
-
-}
+};

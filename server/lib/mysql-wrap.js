@@ -13,7 +13,6 @@ const mysql = require('mysql');
  * Wraps mysql package and uses promises in place of callbacks.
  */
 class MySQL {
-
   /**
    * Create connection to database.
    * @param {MySQLConnectOptions} options
@@ -37,9 +36,7 @@ class MySQL {
    */
   query(sql = '', vars = []) {
     return new Promise((resolve, reject) =>
-      this.cn.query(sql, vars, (err, res) =>
-        err ? reject(err) : resolve(res)
-      )
+      this.cn.query(sql, vars, (err, res) => (err ? reject(err) : resolve(res)))
     );
   }
 
@@ -50,7 +47,6 @@ class MySQL {
     this.cn && this.cn.end();
     this.cn = null;
   }
-
 }
 
 module.exports = MySQL;

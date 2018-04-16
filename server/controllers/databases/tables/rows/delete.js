@@ -11,8 +11,7 @@ const mysql = require('../../../../lib/mysql-wrap');
     }
 */
 module.exports = async function(req, res) {
-
-  const db = new mysql;
+  const db = new mysql();
 
   try {
     db.connect(
@@ -22,16 +21,16 @@ module.exports = async function(req, res) {
     );
     const result = await db.query(
       `DELETE FROM \`${req.params.t}\` WHERE ` +
-      Object.keys(req.body.where).map(k => `\`${k}\` = ?`).join(' AND'),
+        Object.keys(req.body.where)
+          .map(k => `\`${k}\` = ?`)
+          .join(' AND'),
       Object.keys(req.body.where).map(k => req.body.where[k])
     );
     db.close();
-  
+
     res.json(result);
-  }
-  catch (err) {
+  } catch (err) {
     db.close();
     res.status(400).json({ error: err });
   }
-
-}
+};

@@ -28,18 +28,15 @@ function wrap(path, req) {
     controller(req, {
       json: data => resolve(data),
       status: code => {
-        if (code == 200)
-          return { json: data => resolve(data) };
-        else
-          return { json: data => reject(data) };
+        if (code == 200) return { json: data => resolve(data) };
+        else return { json: data => reject(data) };
       }
     })
   );
 }
 
 (async function() {
-
-  const db = new mysql;
+  const db = new mysql();
   db.connect(admyn.database);
 
   let res, actual, expected;
@@ -49,11 +46,11 @@ function wrap(path, req) {
   await db.query('CREATE DATABASE `_admyn_test_database_`');
 
   // Query databases and check for _admyn_test_database_
-  res = await wrap('databases/list', {}),
-  assert(
-    !!res.find(d => d == '_admyn_test_database_'),
-    'controllers/databases/list'
-  );
+  (res = await wrap('databases/list', {})),
+    assert(
+      !!res.find(d => d == '_admyn_test_database_'),
+      'controllers/databases/list'
+    );
 
   // Switch to database
   db.close();
@@ -71,7 +68,7 @@ function wrap(path, req) {
       PRIMARY KEY (\`user_id\`)
     ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8
   `);
-  
+
   // Query tables in database and check for table
   res = await wrap('databases/tables/list', {
     params: { db: '_admyn_test_database_' }
@@ -82,135 +79,210 @@ function wrap(path, req) {
   );
 
   // Query structure of table1
-  actual = await wrap('databases/tables/structure', {
+  (actual = await wrap('databases/tables/structure', {
     params: { db: '_admyn_test_database_', t: 'users' }
-  }),
-  expected = [{
-    Field: 'user_id', Type: 'int(10) unsigned', Null: 'NO', Key: 'PRI',
-    Default: null, Extra: 'auto_increment'
-  }, {
-    Field: 'xyfir_id', Type: 'varchar(64)', Null: 'NO', Key: '',
-    Default: null, Extra: ''
-  }, {
-    Field: 'email', Type: 'varchar(64)', Null: 'NO', Key: '',
-    Default: null, Extra: ''
-  }, {
-    Field: 'subscription', Type: 'bigint(13) unsigned', Null: 'NO', Key: '',
-    Default: null, Extra: ''
-  }, {
-    Field: 'trial', Type: 'tinyint(1)', Null: 'NO', Key: '',
-    Default: '1', Extra: ''
-  }];
+  })),
+    (expected = [
+      {
+        Field: 'user_id',
+        Type: 'int(10) unsigned',
+        Null: 'NO',
+        Key: 'PRI',
+        Default: null,
+        Extra: 'auto_increment'
+      },
+      {
+        Field: 'xyfir_id',
+        Type: 'varchar(64)',
+        Null: 'NO',
+        Key: '',
+        Default: null,
+        Extra: ''
+      },
+      {
+        Field: 'email',
+        Type: 'varchar(64)',
+        Null: 'NO',
+        Key: '',
+        Default: null,
+        Extra: ''
+      },
+      {
+        Field: 'subscription',
+        Type: 'bigint(13) unsigned',
+        Null: 'NO',
+        Key: '',
+        Default: null,
+        Extra: ''
+      },
+      {
+        Field: 'trial',
+        Type: 'tinyint(1)',
+        Null: 'NO',
+        Key: '',
+        Default: '1',
+        Extra: ''
+      }
+    ]);
   assert.deepEqual(actual, expected, 'controllers/databases/tables/structure');
 
   // Insert row into table
-  actual = await wrap('databases/tables/rows/insert', {
+  (actual = await wrap('databases/tables/rows/insert', {
     params: {
-      db: '_admyn_test_database_', t: 'users'
+      db: '_admyn_test_database_',
+      t: 'users'
     },
     body: {
       data: {
-        user_id: 1, xyfir_id: 'test', email: 'test@domain.com',
-        subscription: 1494454357596, trial: true
+        user_id: 1,
+        xyfir_id: 'test',
+        email: 'test@domain.com',
+        subscription: 1494454357596,
+        trial: true
       }
     }
-  }),
-  expected = {
-    fieldCount: 0, affectedRows: 1, insertId: 1, serverStatus: 2,
-    warningCount: 0, message: '', protocol41: true, changedRows: 0
-  };
+  })),
+    (expected = {
+      fieldCount: 0,
+      affectedRows: 1,
+      insertId: 1,
+      serverStatus: 2,
+      warningCount: 0,
+      message: '',
+      protocol41: true,
+      changedRows: 0
+    });
   assert.deepEqual(
-    actual, expected, 'controllers/databases/tables/rows/insert'
+    actual,
+    expected,
+    'controllers/databases/tables/rows/insert'
   );
 
   // Query rows in table and check for row
-  actual = await wrap('databases/tables/rows/find', {
+  (actual = await wrap('databases/tables/rows/find', {
     params: {
-      db: '_admyn_test_database_', t: 'users'
+      db: '_admyn_test_database_',
+      t: 'users'
     },
     query: {
-      columns: '*', orderBy: 'user_id', ascending: 'true',
-      limit: 1, page: 1,
-      search: JSON.stringify([{
-        column: 'user_id', query: 1, type: 'exact'
-      }, {
-        column: 'xyfir_id', query: '%test%', type: 'like'
-      }, {
-        column: 'email', query: '.+\@domain\.com', type: 'regexp'
-      }])
+      columns: '*',
+      orderBy: 'user_id',
+      ascending: 'true',
+      limit: 1,
+      page: 1,
+      search: JSON.stringify([
+        {
+          column: 'user_id',
+          query: 1,
+          type: 'exact'
+        },
+        {
+          column: 'xyfir_id',
+          query: '%test%',
+          type: 'like'
+        },
+        {
+          column: 'email',
+          query: '.+@domain.com',
+          type: 'regexp'
+        }
+      ])
     }
-  }),
-  expected = [{
-    user_id: 1, xyfir_id: 'test', email: 'test@domain.com',
-    subscription: 1494454357596, trial: 1
-  }];
-  assert.deepEqual(
-    actual, expected, 'controllers/databases/tables/rows/find'
-  );
+  })),
+    (expected = [
+      {
+        user_id: 1,
+        xyfir_id: 'test',
+        email: 'test@domain.com',
+        subscription: 1494454357596,
+        trial: 1
+      }
+    ]);
+  assert.deepEqual(actual, expected, 'controllers/databases/tables/rows/find');
 
   // Custom query (rows)
-  actual = await wrap('databases/custom-query', {
+  (actual = await wrap('databases/custom-query', {
     params: { db: '_admyn_test_database_' },
     body: { query: 'SELECT 1 AS result' }
-  }),
-  expected = [{ result: 1 }];
-  assert.deepEqual(
-    actual, expected, 'controllers/databases/custom-query 1'
-  );
+  })),
+    (expected = [{ result: 1 }]);
+  assert.deepEqual(actual, expected, 'controllers/databases/custom-query 1');
 
   // Custom query (results)
-  actual = await wrap('databases/custom-query', {
+  (actual = await wrap('databases/custom-query', {
     params: { db: '_admyn_test_database_' },
     body: { query: 'DELETE FROM users WHERE user_id = 99' }
-  }),
-  expected = [{
-    fieldCount: 0, affectedRows: 0, insertId: 0, serverStatus: 2,
-    warningCount: 0, message: '', protocol41: true, changedRows: 0
-  }];
-  assert.deepEqual(
-    actual, expected, 'controllers/databases/custom-query 2'
-  );
+  })),
+    (expected = [
+      {
+        fieldCount: 0,
+        affectedRows: 0,
+        insertId: 0,
+        serverStatus: 2,
+        warningCount: 0,
+        message: '',
+        protocol41: true,
+        changedRows: 0
+      }
+    ]);
+  assert.deepEqual(actual, expected, 'controllers/databases/custom-query 2');
 
   // Edit row in table
-  actual = await wrap('databases/tables/rows/edit', {
+  (actual = await wrap('databases/tables/rows/edit', {
     params: {
-      db: '_admyn_test_database_', t: 'users'
+      db: '_admyn_test_database_',
+      t: 'users'
     },
     body: {
       set: {
-        xyfir_id: 'updated', trial: 0
+        xyfir_id: 'updated',
+        trial: 0
       },
       where: {
-        user_id: 1, xyfir_id: 'test'
+        user_id: 1,
+        xyfir_id: 'test'
       }
     }
-  }),
-  expected = {
-    fieldCount: 0, affectedRows: 1, insertId: 0, serverStatus: 2,
-    message: '(Rows matched: 1  Changed: 1  Warnings: 0',
-    warningCount: 0, protocol41: true, changedRows: 1
-  };
-  assert.deepEqual(
-    actual, expected, 'controllers/databases/tables/rows/edit'
-  );
+  })),
+    (expected = {
+      fieldCount: 0,
+      affectedRows: 1,
+      insertId: 0,
+      serverStatus: 2,
+      message: '(Rows matched: 1  Changed: 1  Warnings: 0',
+      warningCount: 0,
+      protocol41: true,
+      changedRows: 1
+    });
+  assert.deepEqual(actual, expected, 'controllers/databases/tables/rows/edit');
 
   // Delete row in table
-  actual = await wrap('databases/tables/rows/delete', {
+  (actual = await wrap('databases/tables/rows/delete', {
     params: {
-      db: '_admyn_test_database_', t: 'users'
+      db: '_admyn_test_database_',
+      t: 'users'
     },
     body: {
       where: {
-        user_id: 1, xyfir_id: 'updated'
+        user_id: 1,
+        xyfir_id: 'updated'
       }
     }
-  }),
-  expected = {
-    fieldCount: 0, affectedRows: 1, insertId: 0, serverStatus: 2,
-    message: '', warningCount: 0, protocol41: true, changedRows: 0
-  };
+  })),
+    (expected = {
+      fieldCount: 0,
+      affectedRows: 1,
+      insertId: 0,
+      serverStatus: 2,
+      message: '',
+      warningCount: 0,
+      protocol41: true,
+      changedRows: 0
+    });
   assert.deepEqual(
-    actual, expected, 'controllers/databases/tables/rows/delete'
+    actual,
+    expected,
+    'controllers/databases/tables/rows/delete'
   );
 
   // Delete database
@@ -218,5 +290,4 @@ function wrap(path, req) {
 
   console.log('Tests complete');
   process.exit(0);
-
 })();

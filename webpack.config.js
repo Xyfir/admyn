@@ -2,9 +2,8 @@ const webpack = require('webpack');
 const path = require('path');
 
 module.exports = {
-  
   entry: './client/components/App.jsx',
-  
+
   output: {
     libraryTarget: 'umd',
     filename: 'index.js',
@@ -18,17 +17,17 @@ module.exports = {
   },
 
   module: {
-    rules: [{
-      test: /\.jsx?$/,
-      loader: 'babel-loader',
-      include: [
-        path.resolve(__dirname, 'client/components')
-      ],
-      exclude: /node_modules/,
-      options: {
-        presets: ['env', 'react']
+    rules: [
+      {
+        test: /\.jsx?$/,
+        loader: 'babel-loader',
+        include: [path.resolve(__dirname, 'client/components')],
+        exclude: /node_modules/,
+        options: {
+          presets: ['env', 'react']
+        }
       }
-    }]
+    ]
   },
 
   plugins: [
@@ -37,5 +36,4 @@ module.exports = {
       compress: { unused: false }
     })
   ]
-
 };

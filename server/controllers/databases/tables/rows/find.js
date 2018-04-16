@@ -13,8 +13,7 @@ const mysql = require('../../../../lib/mysql-wrap');
     object[]
 */
 module.exports = async function(req, res) {
-
-  const db = new mysql;
+  const db = new mysql();
 
   try {
     db.connect(
@@ -29,9 +28,13 @@ module.exports = async function(req, res) {
 
     const sql = `
       SELECT
-        ${q.columns == '*'
-          ? '*'
-          : q.columns.split(',').map(c => `\`${c}\``).join(', ')
+        ${
+          q.columns == '*'
+            ? '*'
+            : q.columns
+                .split(',')
+                .map(c => `\`${c}\``)
+                .join(', ')
         }
       FROM
         \`${req.params.t}\`
@@ -42,18 +45,16 @@ module.exports = async function(req, res) {
       LIMIT
         ${q.limit * (q.page - 1)},${q.limit}
     `,
-    vars = (q.search || []).map(s => s.query),
-    rows = await db.query(sql, vars);
+      vars = (q.search || []).map(s => s.query),
+      rows = await db.query(sql, vars);
     db.close();
-  
+
     res.json(rows);
-  }
-  catch (err) {
+  } catch (err) {
     db.close();
     res.status(400).json({ error: err });
   }
-
-}
+};
 
 /**
  * Using query.search, build data for the WHERE portion of query.
@@ -65,12 +66,9 @@ function buildSearch(search) {
     .map(s => {
       let t = `\`${s.column}\` `;
 
-      if (s.type == 'exact')
-        t += '= ?';
-      else if (s.type == 'like')
-        t += `LIKE ?`;
-      else
-        t += 'REGEXP ?';
+      if (s.type == 'exact') t += '= ?';
+      else if (s.type == 'like') t += `LIKE ?`;
+      else t += 'REGEXP ?';
 
       return t;
     })

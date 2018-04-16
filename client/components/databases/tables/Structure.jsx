@@ -12,19 +12,18 @@ import TableRow from 'react-md/lib/DataTables/TableRow';
 import Tabs from './Tabs';
 
 export default class TableStructure extends React.Component {
-
   constructor(props) {
     super(props);
   }
 
   render() {
-    const {structure, url} = this.props;
+    const { structure, url } = this.props;
 
     return (
       <div>
         <Tabs url={url} index={1} />
 
-        <DataTable plain className='table-structure'>
+        <DataTable plain className="table-structure">
           <TableHeader>
             <TableRow>
               <TableColumn>Name</TableColumn>
@@ -37,7 +36,7 @@ export default class TableStructure extends React.Component {
           </TableHeader>
 
           <TableBody>
-            {structure.map(col =>
+            {structure.map(col => (
               <TableRow key={col.Field}>
                 <TableColumn>{col.Field}</TableColumn>
                 <TableColumn>{col.Type}</TableColumn>
@@ -46,13 +45,12 @@ export default class TableStructure extends React.Component {
                 <TableColumn>{col.Default + ''}</TableColumn>
                 <TableColumn>{col.Extra}</TableColumn>
               </TableRow>
-            )}
+            ))}
           </TableBody>
         </DataTable>
       </div>
-    )
+    );
   }
-
 }
 
 /*
