@@ -47,7 +47,6 @@ export default class RowForm extends React.Component {
                 label={col.Field}
                 maxRows={10}
                 helpText={col.Type}
-                className="md-cell"
                 defaultValue={row[col.Field]}
               />
             );
@@ -60,7 +59,6 @@ export default class RowForm extends React.Component {
                 type="number"
                 label={col.Field}
                 helpText={col.Type}
-                className="md-cell"
                 defaultValue={row[col.Field]}
               />
             );
@@ -72,7 +70,6 @@ export default class RowForm extends React.Component {
                 ref={i => (this.inputs[col.Field] = i)}
                 label={col.Field}
                 helpText={col.Type}
-                className="md-cell"
                 defaultValue={row[col.Field]}
               />
             );
@@ -85,11 +82,16 @@ export default class RowForm extends React.Component {
               type="text"
               label={col.Field}
               helpText={col.Type}
-              className="md-cell"
               defaultValue={row[col.Field]}
             />
           );
         })}
+
+        {this.props.onDelete ? (
+          <Button raised secondary onClick={() => this.props.onDelete()}>
+            Delete
+          </Button>
+        ) : null}
 
         <Button raised primary onClick={() => this.onSubmit()}>
           Submit
