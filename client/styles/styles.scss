@@ -67,6 +67,10 @@ div.admyn {
     display: flex;
     margin: 1em;
 
+    > div.md-picker-container {
+      width: 100%;
+    }
+
     > button {
       margin-top: 1em;
     }
