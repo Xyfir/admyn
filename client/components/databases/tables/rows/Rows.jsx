@@ -1,6 +1,7 @@
 import {
   ListItemControl,
   DialogContainer,
+  SelectField,
   TableHeader,
   TableColumn,
   DataTable,
@@ -132,6 +133,21 @@ export default class TableRows extends React.Component {
       );
   }
 
+  onSearch() {
+    this.setState(
+      {
+        search: [
+          {
+            column: this._selectColumn.value,
+            query: this._searchQuery.value,
+            type: this._selectSearchType.value
+          }
+        ]
+      },
+      this._loadRows
+    );
+  }
+
   _loadRows() {
     const { state: s } = this;
 
@@ -140,7 +156,7 @@ export default class TableRows extends React.Component {
       .query({
         columns: s.columns.join(','),
         orderBy: s.orderBy,
-        search: s.search.length ? JSON.stringify(s.search) : undefined,
+        search: JSON.stringify(s.search),
         ascending: s.ascending || undefined,
         limit: s.limit,
         page: s.page
@@ -271,6 +287,31 @@ export default class TableRows extends React.Component {
                 />
               ))}
             </List>
+          ) : this.state.dialog == 'search' ? (
+            <div className="search">
+              <SelectField
+                id="select--column"
+                ref={i => (this._selectColumn = i)}
+                label="Column"
+                menuItems={structure.map(col => col.Field)}
+              />
+              <TextField
+                id="text--search"
+                ref={i => (this._searchQuery = i)}
+                type="text"
+                label="Search Query"
+              />
+              <SelectField
+                id="select--search-type"
+                ref={i => (this._selectSearchType = i)}
+                label="Search Type"
+                menuItems={['like', 'exact', 'regexp']}
+              />
+
+              <Button raised primary onClick={() => this.onSearch()}>
+                Search
+              </Button>
+            </div>
           ) : this.state.dialog == 'menu' ? (
             <List className="dialog-menu">
               <ListItem
@@ -282,6 +323,11 @@ export default class TableRows extends React.Component {
                 onClick={() => this.setState({ dialog: 'columns' })}
                 leftIcon={<FontIcon>view_column</FontIcon>}
                 primaryText="Toggle Columns"
+              />
+              <ListItem
+                onClick={() => this.setState({ dialog: 'search' })}
+                leftIcon={<FontIcon>search</FontIcon>}
+                primaryText="Search"
               />
             </List>
           ) : null}

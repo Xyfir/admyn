@@ -45,6 +45,14 @@ div.admyn {
       section.row-form {
         margin: 0;
       }
+
+      div.search {
+        padding: 1em;
+
+        > * {
+          width: 100%;
+        }
+      }
     }
 
     div.custom-query {
