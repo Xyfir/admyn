@@ -39,7 +39,7 @@ module.exports = async function(req, res) {
       FROM
         \`${req.params.t}\`
       WHERE
-        ${q.search ? buildSearch(q.search) : '1 = 1'}
+        ${q.search && q.search.length ? buildSearch(q.search) : '1 = 1'}
       ORDER BY
         \`${q.orderBy}\` ${q.ascending ? 'ASC' : 'DESC'}
       LIMIT
