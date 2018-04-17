@@ -14,7 +14,6 @@ import {
   Button,
   List
 } from 'react-md';
-import PropTypes from 'prop-types';
 import request from 'superagent';
 import React from 'react';
 
@@ -133,19 +132,29 @@ export default class TableRows extends React.Component {
       );
   }
 
-  onSearch() {
-    this.setState(
-      {
-        search: [
-          {
-            column: this._selectColumn.value,
-            query: this._searchQuery.value,
-            type: this._selectSearchType.value
-          }
-        ]
-      },
-      this._loadRows
-    );
+  /**
+   * @param {number} i - i[ndex]
+   * @param {string} p - p[rop]
+   * @param {string} v - v[alue]
+   */
+  onSearchChange(i, p, v) {
+    const search = this.state.search.slice();
+    search[i][p] = v;
+    this.setState({ search });
+  }
+
+  onAddSearch() {
+    this.setState({
+      search: this.state.search.concat({
+        column: this.props.structure[0].Field,
+        query: '',
+        type: 'like'
+      })
+    });
+  }
+
+  onResetSearch() {
+    this.setState({ search: [] }, this._loadRows);
   }
 
   _loadRows() {
@@ -167,7 +176,7 @@ export default class TableRows extends React.Component {
   }
 
   render() {
-    const { rows, custom, columns } = this.state;
+    const { rows, custom, columns, search } = this.state;
     const structure = this.state.custom
       ? Object.keys(rows[0] || {}).map(Field => Object({ Field }))
       : this.props.structure;
@@ -288,29 +297,46 @@ export default class TableRows extends React.Component {
               ))}
             </List>
           ) : this.state.dialog == 'search' ? (
-            <div className="search">
-              <SelectField
-                id="select--column"
-                ref={i => (this._selectColumn = i)}
-                label="Column"
-                menuItems={structure.map(col => col.Field)}
-              />
-              <TextField
-                id="text--search"
-                ref={i => (this._searchQuery = i)}
-                type="text"
-                label="Search Query"
-              />
-              <SelectField
-                id="select--search-type"
-                ref={i => (this._selectSearchType = i)}
-                label="Search Type"
-                menuItems={['like', 'exact', 'regexp']}
-              />
+            <div className="search-container">
+              {search.map((s, i) => (
+                <div className="search" key={i}>
+                  <SelectField
+                    id={`select--column--${i}`}
+                    label="Column"
+                    value={s.column}
+                    onChange={v => this.onSearchChange(i, 'column', v)}
+                    menuItems={structure.map(col => col.Field)}
+                  />
+                  <TextField
+                    floating
+                    id={`text--search-${i}`}
+                    type="text"
+                    value={s.query}
+                    label="Search Query"
+                    onChange={v => this.onSearchChange(i, 'query', v)}
+                  />
+                  <SelectField
+                    id={`select--search-type-${i}`}
+                    value={s.type}
+                    label="Search Type"
+                    onChange={v => this.onSearchChange(i, 'type', v)}
+                    menuItems={['like', 'exact', 'regexp']}
+                  />
+                </div>
+              ))}
 
-              <Button raised primary onClick={() => this.onSearch()}>
+              <Button raised primary onClick={() => this._loadRows()}>
                 Search
               </Button>
+
+              <div className="secondary-controls">
+                <Button raised secondary onClick={() => this.onAddSearch()}>
+                  Add
+                </Button>
+                <Button raised secondary onClick={() => this.onResetSearch()}>
+                  Reset
+                </Button>
+              </div>
             </div>
           ) : this.state.dialog == 'menu' ? (
             <List className="dialog-menu">
@@ -350,10 +376,3 @@ export default class TableRows extends React.Component {
     );
   }
 }
-
-/* For some reason this throws an error when uncommented
-TableRows.propTypes = {
-  structure: PropTypes.arrayOf(PropTypes.object).isRequired,
-  url: PropTypes.array(PropTypes.string).isRequired,
-  api: PropTypes.string.isRequired
-};*/

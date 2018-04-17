@@ -46,11 +46,38 @@ div.admyn {
         margin: 0;
       }
 
-      div.search {
+      div.search-container {
         padding: 1em;
 
         > * {
           width: 100%;
+        }
+
+        > div.search {
+          padding-bottom: 2em;
+          border-bottom: solid $md-grey-600 0.1em;
+          margin-bottom: 2em;
+
+          > * {
+            width: 100%;
+          }
+        }
+
+        > div.secondary-controls {
+          display: flex;
+          margin-top: 1em;
+
+          > button {
+            flex: 1;
+
+            &:first-child {
+              margin-right: 0.5em;
+            }
+
+            &:last-child {
+              margin-left: 0.5em;
+            }
+          }
         }
       }
     }
