@@ -27,7 +27,7 @@ module.exports = {
         include: [path.resolve(__dirname, 'client/components')],
         exclude: /node_modules/,
         options: {
-          presets: ['env', 'react']
+          presets: ['@babel/preset-env', '@babel/preset-react']
         }
       }
     ]
