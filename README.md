@@ -4,11 +4,11 @@ Used by [Ptorx](https://ptorx.com), [xyAnnotations](https://annotations.xyfir.co
 
 # Features
 
-* View databases on provided MySQL/MariaDB server
-* View tables within a database
-* View a table's structure
-* View, edit, insert, and remove rows within a table
-* Ability to write, run, and see the results of your own custom SQL queries
+- View databases on provided MySQL/MariaDB server
+- View tables within a database
+- View a table's structure
+- View, search, edit, insert, and remove rows within a table
+- Ability to write, run, and see the results of your own custom SQL queries
 
 This panel is currently very simple and limited in what it is able to do. Feel free to implement new features as you need them and create a pull request.
 
