@@ -1,6 +1,8 @@
 A simple admin panel that integrates into existing Node + Express + MySQL/MariaDB applications.
 
-Used by [Ptorx](https://ptorx.com), [xyAnnotations](https://annotations.xyfir.com), and other [Xyfir](https://www.xyfir.com/) projects.
+# Deprecated
+
+**This project will most likely not receive any more updates.** If anyone would like to mantain it, contact [MrXyfir](https://github.com/MrXyfir).
 
 # Features
 
