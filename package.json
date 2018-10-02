@@ -1,6 +1,6 @@
 {
   "name": "admyn",
-  "version": "1.4.1",
+  "version": "1.4.2",
   "description": "An admin panel that integrates into existing Node + Express + MySQL/MariaDB applications.",
   "files": [
     "client/",
@@ -42,18 +42,18 @@
     "mysql": "^2.16.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.0.1",
-    "@babel/preset-env": "^7.0.0",
+    "@babel/core": "^7.1.2",
+    "@babel/preset-env": "^7.1.0",
     "@babel/preset-react": "^7.0.0",
-    "babel-loader": "^8.0.2",
+    "babel-loader": "^8.0.4",
     "body-parser": "^1.18.3",
     "node-sass": "^4.9.3",
     "prop-types": "^15.6.2",
-    "react": "^16.5.1",
-    "react-dom": "^16.5.1",
-    "react-md": "^1.6.1",
+    "react": "^16.5.2",
+    "react-dom": "^16.5.2",
+    "react-md": "^1.7.1",
     "superagent": "^3.8.3",
-    "webpack": "^4.19.0"
+    "webpack": "^4.20.2"
   },
   "peerDependencies": {
     "react": ">= 16.0.0",
